@@ -1,5 +1,25 @@
 <h1>Todo App</h1>
 
+<hr>
+Queries without params
+<hr>
+
 <app-add-todo></app-add-todo>
 <app-todos-list></app-todos-list>
 <app-total-completed-todos></app-total-completed-todos>
+
+<hr>
+Queries with params:
+<hr>
+
+<form>
+  <label for="todos-category">Select category</label>
+  <br />
+  <select [(ngModel)]="todoCategory" id="todos-category" name="todos-category">
+    <option value="Work">Work</option>
+    <option value="Home">Home</option>
+  </select>
+
+</form>
+<app-category-todos-list [category]="todoCategory"></app-category-todos-list>
+

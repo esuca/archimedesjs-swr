@@ -13,9 +13,12 @@ export class NewCacheLink extends BaseLink {
 
     // only check the cache if it is a query
     if (context.useCase.readonly) {
+      console.log('is query')
       if (this.newCacheManager.has(name)) {
+        console.log('query is cached')
         context.result = this.newCacheManager.get(name);
       } else {
+        console.log('query is not cached')
         this.newCacheManager.set(name, context.result);
         this.nextLink.next(context);
       }
@@ -23,13 +26,18 @@ export class NewCacheLink extends BaseLink {
 
     // TODO: Invalidate the cache, a qry can invalidate the cache?
     this.invalidateCache(name);
+    this.nextLink.next(context);
   }
 
   private invalidateCache(cacheKey: string) {
+    console.log('invalidate queries cache', CacheInvalidations.invalidations)
     CacheInvalidations.invalidations.get(cacheKey)?.forEach((invalidation) => {
       switch (invalidation) {
         default:
-          console.log("invalidation", invalidation);
+          // queriestoinvalidate
+          console.log("invalidate qry:", invalidation);
+          // @ts-ignore
+          this.newCacheManager.delete(invalidation)
       }
     });
   }
